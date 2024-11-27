@@ -5,6 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent } from "@/components/ui/card";
 
 const CONTRACT_ADDRESS = "YOUR_SOLANA_CONTRACT_ADDRESS";
+const DONATION_ADDRESS = "BkN8dnrZvaCVn49V6MKvNN3rLvM2D7usFZe9i1F3626i";
 
 const generateGibberish = () => {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
@@ -60,12 +61,19 @@ const AIChatBox = () => {
 
 const Index = () => {
   const [copied, setCopied] = useState(false);
+  const [copiedDonation, setCopiedDonation] = useState(false);
 
-  const copyAddress = async () => {
-    await navigator.clipboard.writeText(CONTRACT_ADDRESS);
-    setCopied(true);
-    toast.success("Contract address copied!");
-    setTimeout(() => setCopied(false), 2000);
+  const copyAddress = async (address: string, isDonation: boolean) => {
+    await navigator.clipboard.writeText(address);
+    if (isDonation) {
+      setCopiedDonation(true);
+      toast.success("Donation address copied!");
+      setTimeout(() => setCopiedDonation(false), 2000);
+    } else {
+      setCopied(true);
+      toast.success("Contract address copied!");
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
   return (
@@ -93,19 +101,37 @@ const Index = () => {
             The next generation of AI-powered cryptocurrency on Solana
           </p>
 
-          <div className="glass-card p-6 w-full max-w-xl">
-            <p className="text-sm text-gray-400 mb-2">Contract Address</p>
-            <div className="flex items-center space-x-4">
-              <code className="text-accent flex-1 overflow-x-auto">
-                {CONTRACT_ADDRESS}
-              </code>
-              <button
-                onClick={copyAddress}
-                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-                title="Copy address"
-              >
-                <Copy className={copied ? "text-green-400" : "text-white"} />
-              </button>
+          <div className="glass-card p-6 w-full max-w-xl space-y-6">
+            <div>
+              <p className="text-sm text-gray-400 mb-2">Contract Address</p>
+              <div className="flex items-center space-x-4">
+                <code className="text-accent flex-1 overflow-x-auto">
+                  {CONTRACT_ADDRESS}
+                </code>
+                <button
+                  onClick={() => copyAddress(CONTRACT_ADDRESS, false)}
+                  className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                  title="Copy contract address"
+                >
+                  <Copy className={copied ? "text-green-400" : "text-white"} />
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <p className="text-sm text-gray-400 mb-2">Donation Address</p>
+              <div className="flex items-center space-x-4">
+                <code className="text-accent flex-1 overflow-x-auto">
+                  {DONATION_ADDRESS}
+                </code>
+                <button
+                  onClick={() => copyAddress(DONATION_ADDRESS, true)}
+                  className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                  title="Copy donation address"
+                >
+                  <Copy className={copiedDonation ? "text-green-400" : "text-white"} />
+                </button>
+              </div>
             </div>
           </div>
         </div>
