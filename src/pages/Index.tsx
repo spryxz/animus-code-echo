@@ -6,6 +6,58 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const CONTRACT_ADDRESS = "YOUR_SOLANA_CONTRACT_ADDRESS";
 
+const generateGibberish = () => {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+  const length = Math.floor(Math.random() * 20) + 5;
+  return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
+};
+
+const AIChatBox = () => {
+  const [messages, setMessages] = useState<Array<{ ai: number; text: string }>>([]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMessages(prev => {
+        const newMessages = [...prev];
+        if (newMessages.length > 8) newMessages.shift();
+        return [...newMessages, {
+          ai: Math.random() > 0.5 ? 1 : 2,
+          text: generateGibberish()
+        }];
+      });
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <Card className="glass-card mb-8">
+      <CardContent className="p-4">
+        <h3 className="text-xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+          AI Neural Network Communication
+        </h3>
+        <ScrollArea className="h-[200px] w-full rounded-md border p-4">
+          {messages.map((msg, i) => (
+            <div
+              key={i}
+              className={`mb-2 flex ${msg.ai === 1 ? 'justify-start' : 'justify-end'}`}
+            >
+              <div
+                className={`px-3 py-2 rounded-lg ${
+                  msg.ai === 1 ? 'bg-primary/20' : 'bg-accent/20'
+                } max-w-[80%]`}
+              >
+                <span className="text-xs text-gray-400">AI_{msg.ai}</span>
+                <p className="font-mono text-sm">{msg.text}</p>
+              </div>
+            </div>
+          ))}
+        </ScrollArea>
+      </CardContent>
+    </Card>
+  );
+};
+
 const Index = () => {
   const [copied, setCopied] = useState(false);
 
@@ -59,6 +111,7 @@ const Index = () => {
         </div>
 
         <section className="max-w-4xl mx-auto">
+          <AIChatBox />
           <Card className="glass-card overflow-hidden">
             <CardContent className="p-8">
               <h2 className="text-3xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
