@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Copy } from "lucide-react";
+import { Copy, Twitter } from "lucide-react";
 import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent } from "@/components/ui/card";
@@ -20,6 +20,16 @@ const Index = () => {
     <div className="min-h-screen relative">
       <MatrixRain />
       <FloatingParticles />
+      
+      <a
+        href="https://x.com/AnimusAiquantum"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="absolute top-4 right-4 z-20 p-2 glass-card hover:bg-white/20 transition-all rounded-full"
+        aria-label="Follow us on Twitter"
+      >
+        <Twitter className="w-6 h-6" />
+      </a>
       
       <main className="relative z-10 container mx-auto px-4 py-20 space-y-32">
         <div className="flex flex-col items-center justify-center space-y-12">
