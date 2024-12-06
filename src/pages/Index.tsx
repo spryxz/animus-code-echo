@@ -15,6 +15,16 @@ const Index = () => {
       
       <div className="fixed inset-0 z-0 bg-[url('/christmas-money.jpg')] opacity-10 bg-cover bg-center" />
       
+      {/* Santa's Sleigh Animation */}
+      <div className="fixed top-20 left-0 w-32 h-32 z-10 animate-float">
+        <img src="/sleigh.png" alt="Santa's Sleigh" className="w-full h-full object-contain" />
+      </div>
+
+      {/* Money Bags Animation */}
+      <div className="fixed bottom-20 right-20 w-24 h-24 z-10 animate-bounce-slow">
+        <img src="/money-bag.png" alt="Money Bag" className="w-full h-full object-contain" />
+      </div>
+      
       <a
         href="https://x.com/JingleBags"
         target="_blank"
@@ -28,11 +38,11 @@ const Index = () => {
       <main className="relative z-10 container mx-auto px-4 py-20 space-y-32">
         <div className="flex flex-col items-center justify-center space-y-12">
           <h1 className="text-6xl md:text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 animate-pulse">
-            Digital Assets
+            JINGLE BAGS
           </h1>
           
           <p className="text-xl md:text-2xl text-center max-w-2xl text-blue-300">
-            Secure blockchain technology for the future of finance 💰
+            Spreading holiday cheer through digital innovation 🎄
           </p>
 
           <AddressCard contractAddress={CONTRACT_ADDRESS} donationAddress={DONATION_ADDRESS} />
@@ -43,24 +53,24 @@ const Index = () => {
           <Card className="glass-card overflow-hidden border-blue-500/20 bg-gradient-to-r from-blue-500/10 to-green-500/10">
             <CardContent className="p-8">
               <h2 className="text-3xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500">
-                About Our Platform
+                About JINGLE BAGS
               </h2>
               <ScrollArea className="h-[400px] pr-4">
                 <div className="space-y-6 text-lg text-blue-200">
                   <p>
-                    Built on cutting-edge blockchain technology, our platform represents the future of digital asset management and secure transactions.
+                    JINGLE BAGS brings the magic of the holiday season to the digital world, combining festive spirit with innovative technology.
                   </p>
                   <p>
-                    Using advanced cryptographic algorithms and distributed ledger technology, we've created a robust system that ensures transparency and security for all users.
+                    Our platform creates a unique experience where holiday cheer meets digital innovation, bringing joy to our community.
                   </p>
                   <p>
-                    Our smart contract infrastructure is designed to handle high-volume transactions while maintaining the highest standards of security and efficiency.
+                    With JINGLE BAGS, we're building a festive ecosystem that spreads happiness and creates value for all participants.
                   </p>
                   <p>
-                    With a focus on sustainability and scalability, we're building more than just a platform - we're creating the foundation for the future of digital finance.
+                    Join our growing community of holiday enthusiasts and be part of the most cheerful digital revolution.
                   </p>
                   <p>
-                    Join us in shaping the future of digital assets and experience the power of blockchain technology firsthand.
+                    Experience the magic of JINGLE BAGS and help us spread joy across the digital landscape.
                   </p>
                 </div>
               </ScrollArea>
