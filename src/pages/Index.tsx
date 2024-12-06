@@ -1,4 +1,4 @@
-import { Twitter } from "lucide-react";
+import { Twitter, Discord, TikTok } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ChristmasBackground from "@/components/ChristmasBackground";
@@ -25,15 +25,36 @@ const Index = () => {
         <img src="/money-bag.png" alt="Money Bag" className="w-full h-full object-contain" />
       </div>
       
-      <a
-        href="https://x.com/JingleBags"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="absolute top-4 right-4 z-20 p-2 glass-card hover:bg-white/20 transition-all rounded-full"
-        aria-label="Follow us on Twitter"
-      >
-        <Twitter className="w-6 h-6 text-green-400" />
-      </a>
+      {/* Social Media Links */}
+      <div className="absolute top-4 right-4 z-20 flex gap-2">
+        <a
+          href="https://x.com/JingleBags"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="p-2 glass-card hover:bg-white/20 transition-all rounded-full"
+          aria-label="Follow us on Twitter"
+        >
+          <Twitter className="w-6 h-6 text-green-400" />
+        </a>
+        <a
+          href="https://discord.gg/jinglebags"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="p-2 glass-card hover:bg-white/20 transition-all rounded-full"
+          aria-label="Join our Discord"
+        >
+          <Discord className="w-6 h-6 text-green-400" />
+        </a>
+        <a
+          href="https://tiktok.com/@jinglebags"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="p-2 glass-card hover:bg-white/20 transition-all rounded-full"
+          aria-label="Follow us on TikTok"
+        >
+          <TikTok className="w-6 h-6 text-green-400" />
+        </a>
+      </div>
       
       <main className="relative z-10 container mx-auto px-4 py-20 space-y-32">
         <div className="flex flex-col items-center justify-center space-y-12">
