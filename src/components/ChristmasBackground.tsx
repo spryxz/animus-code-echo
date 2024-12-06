@@ -10,28 +10,31 @@ const ChristmasBackground = () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const snowflakes: { x: number; y: number; size: number; speed: number }[] = [];
+    const snowflakes: { x: number; y: number; size: number; speed: number; opacity: number }[] = [];
     
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 150; i++) {
       snowflakes.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        size: Math.random() * 4 + 2,
-        speed: Math.random() * 2 + 1
+        size: Math.random() * 3 + 1,
+        speed: Math.random() * 1 + 0.5,
+        opacity: Math.random() * 0.5 + 0.3
       });
     }
 
     function drawSnowflakes() {
       if (!ctx) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#fff";
       
       snowflakes.forEach(flake => {
         ctx.beginPath();
+        ctx.fillStyle = `rgba(255, 255, 255, ${flake.opacity})`;
         ctx.arc(flake.x, flake.y, flake.size, 0, Math.PI * 2);
         ctx.fill();
         
         flake.y += flake.speed;
+        flake.x += Math.sin(flake.y * 0.01) * 0.5;
+        
         if (flake.y > canvas.height) {
           flake.y = -10;
           flake.x = Math.random() * canvas.width;
@@ -43,8 +46,16 @@ const ChristmasBackground = () => {
 
     drawSnowflakes();
 
+    const handleResize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    window.addEventListener('resize', handleResize);
+
     return () => {
       document.body.removeChild(canvas);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
