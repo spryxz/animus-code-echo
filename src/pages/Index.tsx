@@ -15,11 +15,6 @@ const Index = () => {
       
       <div className="fixed inset-0 z-0 bg-[url('/christmas-money.jpg')] opacity-10 bg-cover bg-center" />
       
-      {/* Santa's Sleigh Animation */}
-      <div className="fixed top-20 left-0 w-32 h-32 z-10 animate-float">
-        <img src="/sleigh.png" alt="Santa's Sleigh" className="w-full h-full object-contain" />
-      </div>
-
       {/* Money Bags Animation */}
       <div className="fixed bottom-20 right-20 w-24 h-24 z-10 animate-bounce-slow">
         <img src="/money-bag.png" alt="Money Bag" className="w-full h-full object-contain" />
