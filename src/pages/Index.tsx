@@ -1,4 +1,4 @@
-import { Twitter, Discord, TikTok } from "lucide-react";
+import { Twitter, MessageSquare, Video } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ChristmasBackground from "@/components/ChristmasBackground";
@@ -43,7 +43,7 @@ const Index = () => {
           className="p-2 glass-card hover:bg-white/20 transition-all rounded-full"
           aria-label="Join our Discord"
         >
-          <Discord className="w-6 h-6 text-green-400" />
+          <MessageSquare className="w-6 h-6 text-green-400" />
         </a>
         <a
           href="https://tiktok.com/@jinglebags"
@@ -52,7 +52,7 @@ const Index = () => {
           className="p-2 glass-card hover:bg-white/20 transition-all rounded-full"
           aria-label="Follow us on TikTok"
         >
-          <TikTok className="w-6 h-6 text-green-400" />
+          <Video className="w-6 h-6 text-green-400" />
         </a>
       </div>
       
