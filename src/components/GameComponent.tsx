@@ -3,7 +3,58 @@ import { Card } from "@/components/ui/card";
 
 const GameComponent = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const effectsContainerRef = useRef<HTMLDivElement>(null);
   const [gameStarted, setGameStarted] = useState(false);
+  
+  const createMuzzleFlash = (x: number, y: number) => {
+    if (!effectsContainerRef.current) return;
+    
+    const flash = document.createElement('div');
+    flash.className = 'muzzle-flash';
+    flash.style.position = 'absolute';
+    flash.style.left = `${x}px`;
+    flash.style.top = `${y}px`;
+    flash.style.width = '30px';
+    flash.style.height = '30px';
+    effectsContainerRef.current.appendChild(flash);
+    
+    setTimeout(() => flash.remove(), 100);
+  };
+
+  const createSparks = (x: number, y: number) => {
+    if (!effectsContainerRef.current) return;
+    
+    for (let i = 0; i < 8; i++) {
+      const spark = document.createElement('div');
+      spark.className = 'spark';
+      spark.style.left = `${x}px`;
+      spark.style.top = `${y}px`;
+      spark.style.setProperty('--spark-travel-x', `${(Math.random() - 0.5) * 100}px`);
+      spark.style.setProperty('--spark-travel-y', `${(Math.random() - 0.5) * 100}px`);
+      effectsContainerRef.current.appendChild(spark);
+      
+      setTimeout(() => spark.remove(), 500);
+    }
+  };
+
+  const createBulletTrail = (startX: number, startY: number, endX: number, endY: number) => {
+    if (!effectsContainerRef.current) return;
+    
+    const trail = document.createElement('div');
+    trail.className = 'bullet-trail';
+    trail.style.position = 'absolute';
+    trail.style.left = `${startX}px`;
+    trail.style.top = `${startY}px`;
+    
+    const length = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+    const angle = Math.atan2(endY - startY, endX - startX);
+    
+    trail.style.width = `${length}px`;
+    trail.style.transform = `rotate(${angle}rad)`;
+    
+    effectsContainerRef.current.appendChild(trail);
+    setTimeout(() => trail.remove(), 100);
+  };
   
   const startGame = () => {
     setGameStarted(true);
@@ -40,7 +91,7 @@ const GameComponent = () => {
         if (bullet.x > canvas.width) bullets.splice(index, 1);
       });
 
-      // Spawn and draw enemies (suited figures)
+      // Spawn and draw enemies
       if (Math.random() < 0.02) {
         enemies.push({
           x: canvas.width,
@@ -64,6 +115,7 @@ const GameComponent = () => {
             enemies.splice(index, 1);
             bullets.splice(bulletIndex, 1);
             score += 100;
+            createSparks(enemy.x, enemy.y);
           }
         });
 
@@ -84,8 +136,14 @@ const GameComponent = () => {
       playerY = e.clientY - rect.top;
     };
 
-    const handleClick = () => {
+    const handleClick = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const clickY = e.clientY - rect.top;
+      
       bullets.push({ x: playerX, y: playerY });
+      createMuzzleFlash(playerX + 15, playerY);
+      createBulletTrail(playerX + 15, playerY, clickX, clickY);
     };
 
     canvas.addEventListener('mousemove', handleMouseMove);
@@ -117,12 +175,18 @@ const GameComponent = () => {
           </button>
         </div>
       ) : (
-        <canvas
-          ref={canvasRef}
-          width={800}
-          height={400}
-          className="w-full rounded-lg cursor-crosshair"
-        />
+        <div className="relative">
+          <canvas
+            ref={canvasRef}
+            width={800}
+            height={400}
+            className="w-full rounded-lg cursor-crosshair"
+          />
+          <div
+            ref={effectsContainerRef}
+            className="absolute inset-0 pointer-events-none overflow-hidden"
+          />
+        </div>
       )}
     </Card>
   );
