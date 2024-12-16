@@ -12,11 +12,6 @@ const Index = () => {
     <div className="min-h-screen relative bg-[#0a0f1a]">
       <div className="fixed inset-0 z-0 bg-[url('/christmas-money.jpg')] opacity-10 bg-cover bg-center" />
       
-      {/* Money Bags Animation */}
-      <div className="fixed bottom-20 right-20 w-24 h-24 z-10 animate-bounce-slow">
-        <img src="/money-bag.png" alt="Money Bag" className="w-full h-full object-contain" />
-      </div>
-      
       {/* Social Media Links */}
       <div className="absolute top-4 right-4 z-20 flex gap-2">
         <a
