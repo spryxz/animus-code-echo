@@ -18,7 +18,9 @@ const GameComponent = () => {
       x: canvas.width / 4,
       y: canvas.height / 2,
       size: 60,
-      speed: 5
+      speed: 5,
+      maxSpeed: 8,
+      minSpeed: 3
     };
 
     const mines: Array<{x: number, y: number, size: number}> = [];
@@ -26,8 +28,8 @@ const GameComponent = () => {
     
     // Input handling
     const keys: {[key: string]: boolean} = {};
-    window.addEventListener('keydown', (e) => keys[e.key] = true);
-    window.addEventListener('keyup', (e) => keys[e.key] = false);
+    window.addEventListener('keydown', (e) => keys[e.key.toLowerCase()] = true);
+    window.addEventListener('keyup', (e) => keys[e.key.toLowerCase()] = false);
 
     // Spawn objects
     const spawnMine = () => {
@@ -142,12 +144,20 @@ const GameComponent = () => {
       ctx.fillStyle = 'rgba(10, 21, 32, 0.2)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       
-      // Handle player movement
-      if (keys['ArrowUp'] && playerWhale.y > playerWhale.size/2) {
+      // Handle player movement with WASD
+      if (keys['w'] && playerWhale.y > playerWhale.size/2) {
         playerWhale.y -= playerWhale.speed;
       }
-      if (keys['ArrowDown'] && playerWhale.y < canvas.height - playerWhale.size/2) {
+      if (keys['s'] && playerWhale.y < canvas.height - playerWhale.size/2) {
         playerWhale.y += playerWhale.speed;
+      }
+      
+      // Handle speed control with A/D
+      if (keys['a'] && playerWhale.speed > playerWhale.minSpeed) {
+        playerWhale.speed -= 0.1;
+      }
+      if (keys['d'] && playerWhale.speed < playerWhale.maxSpeed) {
+        playerWhale.speed += 0.1;
       }
       
       // Spawn objects
