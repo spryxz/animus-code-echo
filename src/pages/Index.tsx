@@ -1,4 +1,4 @@
-import { Twitter, MessageSquare, Video } from "lucide-react";
+import { Twitter } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import AddressCard from "@/components/AddressCard";
@@ -14,7 +14,7 @@ const Index = () => {
       <WaterBackground />
       
       {/* Social Media Links */}
-      <div className="absolute top-4 right-4 z-20 flex gap-2">
+      <div className="absolute top-4 right-4 z-20">
         <a
           href="https://x.com/LuigisDinner"
           target="_blank"
@@ -23,24 +23,6 @@ const Index = () => {
           aria-label="Follow us on Twitter"
         >
           <Twitter className="w-6 h-6 text-sky-400" />
-        </a>
-        <a
-          href="https://discord.gg/luigisdinner"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="p-2 glass-card hover:bg-white/20 transition-all rounded-full"
-          aria-label="Join our Discord"
-        >
-          <MessageSquare className="w-6 h-6 text-sky-400" />
-        </a>
-        <a
-          href="https://tiktok.com/@luigisdinner"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="p-2 glass-card hover:bg-white/20 transition-all rounded-full"
-          aria-label="Follow us on TikTok"
-        >
-          <Video className="w-6 h-6 text-sky-400" />
         </a>
       </div>
       
