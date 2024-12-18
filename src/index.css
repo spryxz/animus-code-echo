@@ -49,6 +49,49 @@
   text-shadow: 0 0 10px currentColor;
 }
 
+@keyframes bubble {
+  0% {
+    transform: translateY(100vh) scale(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-20vh) scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes wave {
+  0% { transform: translateX(-100%) rotate(0deg); }
+  100% { transform: translateX(100%) rotate(360deg); }
+}
+
+.water-effect {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(14,165,233,0.05) 0%, rgba(15,23,42,0.3) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bubble {
+  position: absolute;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.1) 100%);
+  border-radius: 50%;
+  animation: bubble var(--duration) ease-in infinite;
+  opacity: 0;
+}
+
+.wave {
+  position: absolute;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(14,165,233,0.1), transparent);
+  animation: wave 8s linear infinite;
+}
+
 @keyframes flash {
   0%, 100% { opacity: 0; }
   50% { opacity: 1; }
@@ -61,7 +104,7 @@
 
 .muzzle-flash {
   animation: flash 0.1s ease-out;
-  background: radial-gradient(circle, #F97316 0%, transparent 70%);
+  background: radial-gradient(circle, #0EA5E9 0%, transparent 70%);
   mix-blend-mode: screen;
 }
 
@@ -69,7 +112,7 @@
   position: absolute;
   width: 4px;
   height: 4px;
-  background: #F97316;
+  background: #0EA5E9;
   border-radius: 50%;
   animation: spark 0.5s ease-out forwards;
 }
@@ -77,6 +120,6 @@
 .bullet-trail {
   position: absolute;
   height: 2px;
-  background: linear-gradient(90deg, #F97316, transparent);
+  background: linear-gradient(90deg, #0EA5E9, transparent);
   transform-origin: left center;
 }
