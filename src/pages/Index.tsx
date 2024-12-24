@@ -3,15 +3,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import AddressCard from "@/components/AddressCard";
 import GameComponent from "@/components/GameComponent";
-import WaterBackground from "@/components/WaterBackground";
+import ChristmasBackground from "@/components/ChristmasBackground";
 
 const CONTRACT_ADDRESS = "9g8W6Yu5tC1w9YuZ56jfSPqnYe8fUTveEhTX8NENpump";
 const DONATION_ADDRESS = "BiiEGigqQw1jhRcfuiL4c8qhGq3tjBs192tPYg98NnB6";
 
 const Index = () => {
   return (
-    <div className="min-h-screen relative bg-[#0a1520]">
-      <WaterBackground />
+    <div className="min-h-screen relative bg-gradient-to-b from-[#1a0f2e] to-[#0f172a]">
+      <ChristmasBackground />
       
       {/* Social Media Links */}
       <div className="absolute top-4 right-4 z-20">
@@ -28,12 +28,12 @@ const Index = () => {
       
       <main className="relative z-10 container mx-auto px-4 py-20 space-y-32">
         <div className="flex flex-col items-center justify-center space-y-12">
-          <h1 className="text-6xl md:text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-blue-500 animate-pulse">
-            ORCA TRENCHES
+          <h1 className="text-6xl md:text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-green-500 animate-pulse">
+            The Last Christmas Miracle
           </h1>
           
-          <p className="text-xl md:text-2xl text-center max-w-2xl text-sky-300">
-            Dive deep into the abyss with the apex predators 🌊
+          <p className="text-xl md:text-2xl text-center max-w-2xl text-green-300">
+            Help Santa collect magical coins and spread the Christmas spirit! 🎅🎄
           </p>
 
           <AddressCard contractAddress={CONTRACT_ADDRESS} donationAddress={DONATION_ADDRESS} />
@@ -41,24 +41,24 @@ const Index = () => {
 
         <section className="max-w-4xl mx-auto">
           <GameComponent />
-          <Card className="glass-card mt-8 overflow-hidden border-sky-500/20 bg-gradient-to-r from-sky-500/10 to-blue-500/10">
+          <Card className="glass-card mt-8 overflow-hidden border-red-500/20 bg-gradient-to-r from-red-500/10 to-green-500/10">
             <CardContent className="p-8">
-              <h2 className="text-3xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-blue-500">
-                About Orca Trenches
+              <h2 className="text-3xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-green-500">
+                About The Last Christmas Miracle
               </h2>
               <ScrollArea className="h-[400px] pr-4">
-                <div className="space-y-6 text-lg text-sky-200">
+                <div className="space-y-6 text-lg text-green-200">
                   <p>
-                    Welcome to the depths of Orca Trenches, where the ocean's most formidable hunters rule the abyss.
+                    Welcome to the magical world of The Last Christmas Miracle, where Santa needs your help to collect special coins that power his sleigh!
                   </p>
                   <p>
-                    Take control of our mysterious orca as it patrols the dark waters, protecting its territory from intruders.
+                    Guide Santa through the snowy night sky, avoiding obstacles while gathering magical coins that help spread Christmas cheer.
                   </p>
                   <p>
-                    Navigate through the deep blue, where every shadow could hide a potential threat or prey.
+                    Use WASD controls to navigate Santa: W/S to move up and down, A/D to control speed. Can you help save Christmas?
                   </p>
                   <p>
-                    Will you maintain dominance in these treacherous waters? The hunt begins...
+                    Every coin collected brings us closer to making this Christmas truly miraculous!
                   </p>
                 </div>
               </ScrollArea>

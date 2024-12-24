@@ -14,7 +14,7 @@ const GameComponent = () => {
     if (!ctx) return;
 
     let animationFrameId: number;
-    let playerWhale = {
+    let playerSanta = {
       x: canvas.width / 4,
       y: canvas.height / 2,
       size: 60,
@@ -56,11 +56,11 @@ const GameComponent = () => {
     const checkCollisions = () => {
       // Check mine collisions
       mines.forEach((mine) => {
-        const dx = playerWhale.x - mine.x;
-        const dy = playerWhale.y - mine.y;
+        const dx = playerSanta.x - mine.x;
+        const dy = playerSanta.y - mine.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
         
-        if (distance < (playerWhale.size/2 + mine.size/2)) {
+        if (distance < (playerSanta.size/2 + mine.size/2)) {
           setGameOver(true);
         }
       });
@@ -68,11 +68,11 @@ const GameComponent = () => {
       // Check coin collisions
       for (let i = coins.length - 1; i >= 0; i--) {
         const coin = coins[i];
-        const dx = playerWhale.x - coin.x;
-        const dy = playerWhale.y - coin.y;
+        const dx = playerSanta.x - coin.x;
+        const dy = playerSanta.y - coin.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
         
-        if (distance < (playerWhale.size/2 + coin.size/2)) {
+        if (distance < (playerSanta.size/2 + coin.size/2)) {
           coins.splice(i, 1);
           setScore(prev => prev + 10);
         }
@@ -80,53 +80,61 @@ const GameComponent = () => {
     };
 
     // Draw functions
-    const drawWhale = (x: number, y: number, size: number) => {
+    const drawSanta = (x: number, y: number, size: number) => {
       ctx.save();
       ctx.translate(x, y);
       
-      // Draw whale body
-      ctx.fillStyle = '#1a1a1a';
+      // Draw Santa's body (red suit)
+      ctx.fillStyle = '#ff0000';
       ctx.beginPath();
-      ctx.ellipse(0, 0, size, size/2, 0, 0, Math.PI * 2);
+      ctx.ellipse(0, 0, size/2, size/3, 0, 0, Math.PI * 2);
       ctx.fill();
       
-      // Draw white patch
+      // Draw Santa's hat
+      ctx.fillStyle = '#ff0000';
+      ctx.beginPath();
+      ctx.moveTo(-size/3, -size/3);
+      ctx.lineTo(0, -size/2);
+      ctx.lineTo(size/3, -size/3);
+      ctx.closePath();
+      ctx.fill();
+      
+      // Draw hat's white trim and ball
       ctx.fillStyle = '#ffffff';
       ctx.beginPath();
-      ctx.ellipse(-size/4, 0, size/3, size/6, 0, 0, Math.PI * 2);
+      ctx.arc(0, -size/2, size/10, 0, Math.PI * 2);
       ctx.fill();
+      ctx.fillRect(-size/3, -size/3, size/1.5, size/10);
       
-      // Draw tail
-      ctx.fillStyle = '#1a1a1a';
+      // Draw Santa's beard
+      ctx.fillStyle = '#ffffff';
       ctx.beginPath();
-      ctx.moveTo(size * -0.8, 0);
-      ctx.lineTo(size * -1.2, -size/3);
-      ctx.lineTo(size * -1.2, size/3);
-      ctx.closePath();
+      ctx.ellipse(size/6, 0, size/3, size/4, 0, 0, Math.PI * 2);
       ctx.fill();
       
       ctx.restore();
     };
 
     const drawMine = (x: number, y: number, size: number) => {
-      ctx.fillStyle = '#ff4444';
+      ctx.fillStyle = '#4a5568';
       ctx.beginPath();
       ctx.arc(x, y, size, 0, Math.PI * 2);
       ctx.fill();
       
-      // Draw spikes
+      // Draw spikes (icicles)
       for (let i = 0; i < 8; i++) {
         const angle = (i / 8) * Math.PI * 2;
         ctx.beginPath();
         ctx.moveTo(x + Math.cos(angle) * size, y + Math.sin(angle) * size);
         ctx.lineTo(x + Math.cos(angle) * (size + 10), y + Math.sin(angle) * (size + 10));
-        ctx.strokeStyle = '#ff4444';
+        ctx.strokeStyle = '#a0aec0';
         ctx.lineWidth = 3;
         ctx.stroke();
       }
     };
 
     const drawCoin = (x: number, y: number, size: number) => {
+      // Gold coin with sparkle effect
       ctx.fillStyle = '#ffd700';
       ctx.beginPath();
       ctx.arc(x, y, size, 0, Math.PI * 2);
@@ -134,30 +142,36 @@ const GameComponent = () => {
       ctx.strokeStyle = '#ffa700';
       ctx.lineWidth = 3;
       ctx.stroke();
+      
+      // Add sparkle
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(x - size/3, y - size/3, size/6, 0, Math.PI * 2);
+      ctx.fill();
     };
 
     // Main game loop
     const animate = () => {
       if (!ctx || !canvas || gameOver) return;
       
-      // Clear canvas with water effect
-      ctx.fillStyle = 'rgba(10, 21, 32, 0.2)';
+      // Clear canvas with snowy effect
+      ctx.fillStyle = 'rgba(16, 23, 42, 0.2)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       
       // Handle player movement with WASD
-      if (keys['w'] && playerWhale.y > playerWhale.size/2) {
-        playerWhale.y -= playerWhale.speed;
+      if (keys['w'] && playerSanta.y > playerSanta.size/2) {
+        playerSanta.y -= playerSanta.speed;
       }
-      if (keys['s'] && playerWhale.y < canvas.height - playerWhale.size/2) {
-        playerWhale.y += playerWhale.speed;
+      if (keys['s'] && playerSanta.y < canvas.height - playerSanta.size/2) {
+        playerSanta.y += playerSanta.speed;
       }
       
       // Handle speed control with A/D
-      if (keys['a'] && playerWhale.speed > playerWhale.minSpeed) {
-        playerWhale.speed -= 0.1;
+      if (keys['a'] && playerSanta.speed > playerSanta.minSpeed) {
+        playerSanta.speed -= 0.1;
       }
-      if (keys['d'] && playerWhale.speed < playerWhale.maxSpeed) {
-        playerWhale.speed += 0.1;
+      if (keys['d'] && playerSanta.speed < playerSanta.maxSpeed) {
+        playerSanta.speed += 0.1;
       }
       
       // Spawn objects
@@ -178,8 +192,8 @@ const GameComponent = () => {
         if (coins[i].x < -50) coins.splice(i, 1);
       }
       
-      // Draw player whale
-      drawWhale(playerWhale.x, playerWhale.y, playerWhale.size);
+      // Draw player Santa
+      drawSanta(playerSanta.x, playerSanta.y, playerSanta.size);
       
       // Check collisions
       checkCollisions();
@@ -199,7 +213,7 @@ const GameComponent = () => {
   }, [gameOver]);
 
   return (
-    <Card className="glass-card p-4 border-sky-500/20 bg-gradient-to-r from-sky-500/10 to-blue-500/10">
+    <Card className="glass-card p-4 border-red-500/20 bg-gradient-to-r from-red-500/10 to-green-500/10">
       <div className="relative">
         <canvas
           ref={canvasRef}
@@ -207,7 +221,7 @@ const GameComponent = () => {
           height={400}
           className="w-full rounded-lg"
         />
-        <div className="absolute top-4 left-4 text-xl font-bold text-sky-400">
+        <div className="absolute top-4 left-4 text-xl font-bold text-green-400">
           Score: {score}
         </div>
         {gameOver && (
@@ -220,7 +234,7 @@ const GameComponent = () => {
                   setGameOver(false);
                   setScore(0);
                 }}
-                className="mt-4 px-6 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 transition-colors"
+                className="mt-4 px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
               >
                 Play Again
               </button>
