@@ -13,23 +13,43 @@ const Index = () => {
     <div className="min-h-screen relative bg-gradient-to-b from-[#1a0f2e] to-[#0f172a]">
       <ChristmasBackground />
       
-      {/* Christmas Lights Top */}
-      <div className="absolute top-0 left-0 right-0 h-8 overflow-hidden">
-        <div className="flex justify-between px-4">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className={`w-4 h-4 rounded-full animate-glow ${
-                i % 4 === 0 ? 'bg-red-500' :
-                i % 4 === 1 ? 'bg-green-500' :
-                i % 4 === 2 ? 'bg-yellow-500' :
-                'bg-blue-500'
-              }`}
-              style={{
-                animationDelay: `${i * 0.1}s`
-              }}
-            />
-          ))}
+      {/* Realistic Christmas Lights */}
+      <div className="absolute top-0 left-0 right-0">
+        {/* Cable */}
+        <div className="h-1 bg-[#222222] relative">
+          {/* Light Bulbs */}
+          <div className="flex justify-between px-4 absolute -bottom-3 w-full">
+            {[...Array(20)].map((_, i) => (
+              <div key={i} className="relative">
+                {/* Bulb Socket */}
+                <div className="w-2 h-3 bg-[#333333] rounded-t-sm" />
+                {/* Light Bulb */}
+                <div
+                  className={`w-4 h-4 rounded-full animate-glow shadow-lg ${
+                    i % 4 === 0 ? 'bg-[#F97316] shadow-[#F97316]/50' :
+                    i % 4 === 1 ? 'bg-[#D946EF] shadow-[#D946EF]/50' :
+                    i % 4 === 2 ? 'bg-[#8B5CF6] shadow-[#8B5CF6]/50' :
+                    'bg-[#22C55E] shadow-[#22C55E]/50'
+                  }`}
+                  style={{
+                    animationDelay: `${i * 0.1}s`
+                  }}
+                />
+                {/* Light Glow Effect */}
+                <div
+                  className={`absolute -inset-2 rounded-full blur-md opacity-50 ${
+                    i % 4 === 0 ? 'bg-[#F97316]' :
+                    i % 4 === 1 ? 'bg-[#D946EF]' :
+                    i % 4 === 2 ? 'bg-[#8B5CF6]' :
+                    'bg-[#22C55E]'
+                  }`}
+                  style={{
+                    animationDelay: `${i * 0.1}s`
+                  }}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -52,24 +72,18 @@ const Index = () => {
             <h1 className="text-6xl md:text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-green-500 animate-pulse">
               The Last Christmas Miracle
             </h1>
-            {/* Decorative Elements */}
-            <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
-              <span className="text-4xl">🎄</span>
-            </div>
           </div>
           
           <p className="text-xl md:text-2xl text-center max-w-2xl text-green-300">
-            Help Santa collect magical coins and spread the Christmas spirit! 🎅🎄
+            Help Santa collect magical coins and spread the Christmas spirit!
           </p>
 
           {/* Festive Banner */}
           <div className="w-full max-w-4xl p-6 glass-card bg-gradient-to-r from-red-500/10 to-green-500/10 rounded-xl">
-            <div className="flex items-center justify-center space-x-4">
-              <span className="text-3xl">🎁</span>
+            <div className="flex items-center justify-center">
               <p className="text-lg text-white/90">
                 Join the magical journey and earn special Christmas rewards!
               </p>
-              <span className="text-3xl">🎁</span>
             </div>
           </div>
 
@@ -97,12 +111,6 @@ const Index = () => {
                   <p>
                     Every coin collected brings us closer to making this Christmas truly miraculous!
                   </p>
-                  {/* Additional Festive Elements */}
-                  <div className="flex justify-center space-x-4 mt-8">
-                    <span className="text-4xl animate-bounce-slow">🎅</span>
-                    <span className="text-4xl animate-bounce-slow" style={{ animationDelay: "0.2s" }}>🎄</span>
-                    <span className="text-4xl animate-bounce-slow" style={{ animationDelay: "0.4s" }}>🎁</span>
-                  </div>
                 </div>
               </ScrollArea>
             </CardContent>
