@@ -16,7 +16,7 @@ const Index = () => {
       {/* Social Media Links */}
       <div className="absolute top-4 right-4 z-20">
         <a
-          href="https://x.com/LuigisDinner"
+          href="https://x.com/WojakNewYear"
           target="_blank"
           rel="noopener noreferrer"
           className="p-2 glass-card hover:bg-white/20 transition-all rounded-full"
