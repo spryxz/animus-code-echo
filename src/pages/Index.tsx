@@ -30,12 +30,12 @@ const Index = () => {
         <div className="flex flex-col items-center justify-center space-y-12">
           <div className="relative">
             <h1 className="text-6xl md:text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500 animate-pulse">
-              NEW YEAR SIGMA
+              WOJAK NEW YEAR
             </h1>
           </div>
           
           <p className="text-xl md:text-2xl text-center max-w-2xl text-blue-300">
-            Collect magical tokens and embrace the power of SIGMA!
+            Collect magical tokens and embrace the power of WOJAK!
           </p>
 
           {/* New Year Banner */}
@@ -55,12 +55,12 @@ const Index = () => {
           <Card className="glass-card mt-8 overflow-hidden border-blue-500/20 bg-gradient-to-r from-blue-500/10 to-purple-500/10">
             <CardContent className="p-8">
               <h2 className="text-3xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">
-                About NEW YEAR SIGMA
+                About WOJAK NEW YEAR
               </h2>
               <ScrollArea className="h-[400px] pr-4">
                 <div className="space-y-6 text-lg text-blue-200">
                   <p>
-                    Welcome to the world of NEW YEAR SIGMA, where your journey to becoming a true sigma begins!
+                    Welcome to the world of WOJAK NEW YEAR, where your journey to becoming a true wojak begins!
                   </p>
                   <p>
                     Navigate through the challenges, collect powerful tokens, and prove your worth in this epic adventure.
