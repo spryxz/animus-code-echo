@@ -2,7 +2,6 @@ import { Twitter } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import AddressCard from "@/components/AddressCard";
-import GameComponent from "@/components/GameComponent";
 import FireworksBackground from "@/components/FireworksBackground";
 import AIChatBox from "@/components/AIChatBox";
 
@@ -31,48 +30,37 @@ const Index = () => {
         <div className="flex flex-col items-center justify-center space-y-12">
           <div className="relative">
             <h1 className="text-6xl md:text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500 animate-pulse">
-              WOJAK NEW YEAR
+              ANIMUS AI
             </h1>
           </div>
           
           <p className="text-xl md:text-2xl text-center max-w-2xl text-blue-300">
-            Collect magical tokens and embrace the power of WOJAK!
+            Experience the power of AI with Animus
           </p>
 
           <AIChatBox />
-
-          {/* New Year Banner */}
-          <div className="w-full max-w-4xl p-6 glass-card bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-xl">
-            <div className="flex items-center justify-center">
-              <p className="text-lg text-white/90">
-                Join the revolution and earn special New Year rewards!
-              </p>
-            </div>
-          </div>
 
           <AddressCard contractAddress={CONTRACT_ADDRESS} donationAddress={DONATION_ADDRESS} />
         </div>
 
         <section className="max-w-4xl mx-auto">
-          <GameComponent />
           <Card className="glass-card mt-8 overflow-hidden border-blue-500/20 bg-gradient-to-r from-blue-500/10 to-purple-500/10">
             <CardContent className="p-8">
               <h2 className="text-3xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">
-                About WOJAK NEW YEAR
+                About ANIMUS AI
               </h2>
               <ScrollArea className="h-[400px] pr-4">
                 <div className="space-y-6 text-lg text-blue-200">
                   <p>
-                    Welcome to the world of WOJAK NEW YEAR, where your journey to becoming a true wojak begins!
+                    Welcome to ANIMUS AI, where artificial intelligence meets human creativity.
                   </p>
                   <p>
-                    Navigate through the challenges, collect powerful tokens, and prove your worth in this epic adventure.
+                    Our advanced AI assistant is powered by state-of-the-art language models,
+                    ready to help you with any questions or tasks you might have.
                   </p>
                   <p>
-                    Use WASD controls to move: W/S to move up and down, A/D to control speed. Show them what a real sigma can do!
-                  </p>
-                  <p>
-                    Every token collected brings you closer to achieving sigma status!
+                    Experience the future of AI interaction with our intuitive chat interface
+                    and discover new possibilities in human-AI collaboration.
                   </p>
                 </div>
               </ScrollArea>

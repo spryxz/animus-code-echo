@@ -19,7 +19,10 @@ const AIChatBox = () => {
         const pipe = await pipeline(
           "text-generation",
           "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
-          { device: "cpu" }
+          { 
+            quantized: true,
+            device: "cpu"
+          }
         );
         setModel(pipe);
       } catch (error) {
@@ -50,6 +53,7 @@ const AIChatBox = () => {
         max_new_tokens: 100,
         temperature: 0.7,
         repetition_penalty: 1.1,
+        do_sample: true,
       });
 
       const aiResponse = result[0].generated_text.replace(userMessage, "").trim();
