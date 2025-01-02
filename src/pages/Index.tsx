@@ -4,6 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import AddressCard from "@/components/AddressCard";
 import GameComponent from "@/components/GameComponent";
 import FireworksBackground from "@/components/FireworksBackground";
+import AIChatBox from "@/components/AIChatBox";
 
 const CONTRACT_ADDRESS = "9g8W6Yu5tC1w9YuZ56jfSPqnYe8fUTveEhTX8NENpump";
 const DONATION_ADDRESS = "BiiEGigqQw1jhRcfuiL4c8qhGq3tjBs192tPYg98NnB6";
@@ -37,6 +38,8 @@ const Index = () => {
           <p className="text-xl md:text-2xl text-center max-w-2xl text-blue-300">
             Collect magical tokens and embrace the power of WOJAK!
           </p>
+
+          <AIChatBox />
 
           {/* New Year Banner */}
           <div className="w-full max-w-4xl p-6 glass-card bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-xl">
