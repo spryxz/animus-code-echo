@@ -5,11 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { pipeline } from "@huggingface/transformers";
 
 const AIChatBox = () => {
   const [messages, setMessages] = useState<Array<{ role: "user" | "ai"; text: string }>>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [model, setModel] = useState<any>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -19,80 +21,66 @@ const AIChatBox = () => {
     }
   }, [messages]);
 
-  const generateAdvancedResponse = (userInput: string) => {
-    const lowerInput = userInput.toLowerCase();
-    
-    // Coding related response
-    if (lowerInput.includes("code") || lowerInput.includes("programming") || lowerInput.includes("javascript") || lowerInput.includes("react")) {
-      return `Here's how I can help with your coding request:
+  useEffect(() => {
+    const loadModel = async () => {
+      try {
+        const pipe = await pipeline(
+          "text-generation",
+          "onnx-community/tiny-llama",
+          { device: "cpu" }
+        );
+        setModel(pipe);
+        console.log("Model loaded successfully");
+      } catch (error) {
+        console.error("Error loading model:", error);
+        toast({
+          title: "Model Loading Error",
+          description: "Falling back to basic responses. Please try again later.",
+          variant: "destructive",
+        });
+      }
+    };
 
+    loadModel();
+  }, [toast]);
+
+  const generateResponse = async (userInput: string) => {
+    if (model) {
+      try {
+        const result = await model(userInput, {
+          max_length: 100,
+          temperature: 0.7,
+          top_p: 0.9,
+        });
+        return result[0].generated_text;
+      } catch (error) {
+        console.error("Error generating response:", error);
+        return fallbackResponse(userInput);
+      }
+    }
+    return fallbackResponse(userInput);
+  };
+
+  const fallbackResponse = (input: string) => {
+    const lowerInput = input.toLowerCase();
+    
+    if (lowerInput.includes("code") || lowerInput.includes("programming")) {
+      return `Here's a code example:
 \`\`\`javascript
-// Example code based on your query
-${generateCodeExample(lowerInput)}
-\`\`\`
-
-Let me know if you need any clarification or have questions about the code!`;
+function example() {
+  console.log("Hello, programmer!");
+}
+\`\`\``;
     }
     
-    // Recipe related response
-    if (lowerInput.includes("recipe") || lowerInput.includes("cook") || lowerInput.includes("food")) {
-      return generateRecipe(lowerInput);
+    if (lowerInput.includes("recipe") || lowerInput.includes("cook")) {
+      return `Here's a simple recipe:
+1. Gather ingredients
+2. Follow instructions
+3. Enjoy your meal!`;
     }
     
-    // General assistance
-    return generateGeneralResponse(lowerInput);
-  };
-
-  const generateCodeExample = (input: string) => {
-    if (input.includes("react")) {
-      return `const MyComponent = () => {
-  const [count, setCount] = useState(0);
-  
-  return (
-    <div>
-      <h1>Counter: {count}</h1>
-      <button onClick={() => setCount(count + 1)}>
-        Increment
-      </button>
-    </div>
-  );
-};`;
-    }
-    
-    return `function greet(name) {
-  return \`Hello, \${name}! How can I help you today?\`;
-}`;
-  };
-
-  const generateRecipe = (input: string) => {
-    return `Here's a simple recipe for you:
-
-🍳 Quick and Easy Pasta
-Ingredients:
-- 8 oz pasta
-- 2 cloves garlic
-- 2 tbsp olive oil
-- Salt and pepper to taste
-- Fresh basil
-
-Instructions:
-1. Boil pasta according to package instructions
-2. Sauté minced garlic in olive oil
-3. Combine pasta with garlic oil
-4. Season and garnish with fresh basil
-
-Enjoy your meal! Let me know if you need more specific recipes.`;
-  };
-
-  const generateGeneralResponse = (input: string) => {
-    const responses = [
-      "I understand your question about " + input + ". Let me help you break this down...",
-      "That's an interesting topic! Here's what I know about " + input + "...",
-      "I'd be happy to help you with " + input + ". Here are some key points to consider...",
-      "Based on your question about " + input + ", here's what I suggest...",
-      "Let me provide some insights about " + input + " that might be helpful...",
-    ];
-    return responses[Math.floor(Math.random() * responses.length)];
+    return "I understand your question. Let me help you with that...";
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -105,9 +93,7 @@ Enjoy your meal! Let me know if you need more specific recipes.`;
     setIsLoading(true);
 
     try {
-      // Simulate AI processing with a small delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      const aiResponse = generateAdvancedResponse(userMessage);
+      const aiResponse = await generateResponse(userMessage);
       setMessages(prev => [...prev, { role: "ai", text: aiResponse }]);
     } catch (error) {
       toast({
@@ -160,7 +146,7 @@ Enjoy your meal! Let me know if you need more specific recipes.`;
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask me anything about coding, recipes, or general help..."
+            placeholder="Ask me anything..."
             className="flex-1"
             disabled={isLoading}
           />
