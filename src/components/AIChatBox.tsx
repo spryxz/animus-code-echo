@@ -5,13 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { pipeline } from "@huggingface/transformers";
 
 const AIChatBox = () => {
   const [messages, setMessages] = useState<Array<{ role: "user" | "ai"; text: string }>>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [model, setModel] = useState<any>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -21,66 +19,69 @@ const AIChatBox = () => {
     }
   }, [messages]);
 
-  useEffect(() => {
-    const loadModel = async () => {
-      try {
-        const pipe = await pipeline(
-          "text-generation",
-          "onnx-community/tiny-llama",
-          { device: "cpu" }
-        );
-        setModel(pipe);
-        console.log("Model loaded successfully");
-      } catch (error) {
-        console.error("Error loading model:", error);
-        toast({
-          title: "Model Loading Error",
-          description: "Falling back to basic responses. Please try again later.",
-          variant: "destructive",
-        });
-      }
-    };
-
-    loadModel();
-  }, [toast]);
-
   const generateResponse = async (userInput: string) => {
-    if (model) {
-      try {
-        const result = await model(userInput, {
-          max_length: 100,
-          temperature: 0.7,
-          top_p: 0.9,
-        });
-        return result[0].generated_text;
-      } catch (error) {
-        console.error("Error generating response:", error);
-        return fallbackResponse(userInput);
-      }
-    }
-    return fallbackResponse(userInput);
-  };
-
-  const fallbackResponse = (input: string) => {
-    const lowerInput = input.toLowerCase();
+    const lowerInput = userInput.toLowerCase();
     
+    // Code-related response
     if (lowerInput.includes("code") || lowerInput.includes("programming")) {
-      return `Here's a code example:
+      return `Here's a simple example based on your query:
 \`\`\`javascript
-function example() {
-  console.log("Hello, programmer!");
+// Basic JavaScript function example
+function greet(name) {
+  return \`Hello, \${name}! Welcome to programming.\`;
 }
-\`\`\``;
+
+// Usage
+console.log(greet("Developer"));
+\`\`\`
+
+Feel free to ask for more specific programming examples!`;
     }
     
+    // Recipe-related response
     if (lowerInput.includes("recipe") || lowerInput.includes("cook")) {
-      return `Here's a simple recipe:
-1. Gather ingredients
-2. Follow instructions
-3. Enjoy your meal!`;
+      return `Here's a simple recipe based on your query:
+
+🍳 Quick Pasta Recipe:
+
+Ingredients:
+- 200g pasta
+- 2 cloves garlic
+- 2 tbsp olive oil
+- Salt and pepper to taste
+- Fresh basil (optional)
+
+Instructions:
+1. Boil pasta according to package instructions
+2. Sauté minced garlic in olive oil
+3. Combine pasta with garlic oil
+4. Season and garnish with basil
+
+Enjoy your meal! Let me know if you need more specific recipes.`;
     }
     
-    return "I understand your question. Let me help you with that...";
+    // AI/ML-related response
+    if (lowerInput.includes("ai") || lowerInput.includes("machine learning")) {
+      return `Here's some information about AI/ML:
+
+🤖 Key AI/ML Concepts:
+- Machine Learning is a subset of AI
+- Deep Learning is a subset of Machine Learning
+- Neural Networks are inspired by human brain structure
+- Common applications: image recognition, natural language processing, recommendation systems
+
+Would you like to know more about any specific AI/ML topic?`;
+    }
+    
+    // Default response with helpful suggestions
+    return `I can help you with various tasks! Here are some things you can ask about:
+
+1. 💻 Programming and coding examples
+2. 🍳 Cooking recipes and instructions
+3. 🤖 AI and Machine Learning concepts
+4. 📚 General knowledge and explanations
+
+What would you like to know more about?`;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
