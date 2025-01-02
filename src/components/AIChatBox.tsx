@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent } from "@/components/ui/card";
-import { pipeline } from "@huggingface/transformers";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
@@ -10,28 +9,7 @@ const AIChatBox = () => {
   const [messages, setMessages] = useState<Array<{ role: "user" | "ai"; text: string }>>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [model, setModel] = useState<any>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const initModel = async () => {
-      try {
-        const pipe = await pipeline(
-          "text-generation",
-          "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
-          { 
-            quantized: true,
-            device: "cpu"
-          }
-        );
-        setModel(pipe);
-      } catch (error) {
-        console.error("Error loading model:", error);
-      }
-    };
-
-    initModel();
-  }, []);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -39,32 +17,32 @@ const AIChatBox = () => {
     }
   }, [messages]);
 
+  const generateBasicResponse = (userInput: string) => {
+    const responses = [
+      "I understand. Tell me more about that.",
+      "That's interesting! How does that make you feel?",
+      "I see. What are your thoughts on this?",
+      "Let me help you with that. What specific information do you need?",
+      "I'm processing your request. Could you provide more details?",
+    ];
+    return responses[Math.floor(Math.random() * responses.length)];
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || !model || isLoading) return;
+    if (!input.trim() || isLoading) return;
 
     const userMessage = input.trim();
     setInput("");
     setMessages(prev => [...prev, { role: "user", text: userMessage }]);
     setIsLoading(true);
 
-    try {
-      const result = await model(userMessage, {
-        max_new_tokens: 100,
-        temperature: 0.7,
-        repetition_penalty: 1.1,
-        do_sample: true,
-      });
-
-      const aiResponse = result[0].generated_text.replace(userMessage, "").trim();
-      
+    // Simulate AI processing with a small delay
+    setTimeout(() => {
+      const aiResponse = generateBasicResponse(userMessage);
       setMessages(prev => [...prev, { role: "ai", text: aiResponse }]);
-    } catch (error) {
-      console.error("Error generating response:", error);
-      setMessages(prev => [...prev, { role: "ai", text: "Sorry, I encountered an error. Please try again." }]);
-    } finally {
       setIsLoading(false);
-    }
+    }, 1000);
   };
 
   return (
@@ -77,6 +55,7 @@ const AIChatBox = () => {
           className="h-[300px] w-full rounded-md border border-blue-500/20 p-4"
           ref={scrollRef}
         >
+          <div className="matrix-bg" />
           {messages.map((msg, i) => (
             <div
               key={i}
@@ -108,11 +87,11 @@ const AIChatBox = () => {
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type your message..."
             className="flex-1"
-            disabled={isLoading || !model}
+            disabled={isLoading}
           />
           <Button 
             type="submit" 
-            disabled={isLoading || !model}
+            disabled={isLoading}
             className="bg-blue-500 hover:bg-blue-600"
           >
             Send

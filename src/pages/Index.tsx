@@ -2,7 +2,7 @@ import { Twitter } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import AddressCard from "@/components/AddressCard";
-import FireworksBackground from "@/components/FireworksBackground";
+import MatrixBackground from "@/components/MatrixBackground";
 import AIChatBox from "@/components/AIChatBox";
 
 const CONTRACT_ADDRESS = "9g8W6Yu5tC1w9YuZ56jfSPqnYe8fUTveEhTX8NENpump";
@@ -11,7 +11,7 @@ const DONATION_ADDRESS = "BiiEGigqQw1jhRcfuiL4c8qhGq3tjBs192tPYg98NnB6";
 const Index = () => {
   return (
     <div className="min-h-screen relative bg-gradient-to-b from-[#1a0f2e] to-[#0f172a]">
-      <FireworksBackground />
+      <MatrixBackground />
 
       {/* Social Media Links */}
       <div className="absolute top-4 right-4 z-20">
