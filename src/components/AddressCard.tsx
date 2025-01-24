@@ -26,12 +26,12 @@ const AddressCard = ({ contractAddress, donationAddress }: AddressCardProps) => 
 
   return (
     <div className="glass-card p-6 w-full max-w-xl space-y-6 animate-bounce-slow">
-      <div className="relative overflow-hidden rounded-lg border border-green-500/20 p-6 bg-gradient-to-r from-red-500/10 to-green-500/10">
-        <div className="absolute inset-0 bg-gradient-to-r from-red-500/5 to-green-500/5 animate-pulse" />
+      <div className="relative overflow-hidden rounded-lg border border-blue-500/20 p-6 bg-gradient-to-r from-blue-500/10 to-blue-300/10">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-blue-300/5 animate-pulse" />
         <div>
-          <p className="text-sm text-red-400 mb-2 font-bold">Contract Address</p>
+          <p className="text-sm text-blue-400 mb-2 font-bold">Contract Address</p>
           <div className="flex items-center space-x-4">
-            <code className="text-green-400 flex-1 overflow-x-auto">
+            <code className="text-blue-300 flex-1 overflow-x-auto">
               {contractAddress}
             </code>
             <button
@@ -39,15 +39,15 @@ const AddressCard = ({ contractAddress, donationAddress }: AddressCardProps) => 
               className="p-2 hover:bg-white/10 rounded-lg transition-colors"
               title="Copy contract address"
             >
-              <Copy className={copied ? "text-green-400" : "text-white"} />
+              <Copy className={copied ? "text-blue-400" : "text-white"} />
             </button>
           </div>
         </div>
 
         <div className="mt-6">
-          <p className="text-sm text-red-400 mb-2 font-bold">Donation Address</p>
+          <p className="text-sm text-blue-400 mb-2 font-bold">Donation Address</p>
           <div className="flex items-center space-x-4">
-            <code className="text-green-400 flex-1 overflow-x-auto">
+            <code className="text-blue-300 flex-1 overflow-x-auto">
               {donationAddress}
             </code>
             <button
@@ -55,7 +55,7 @@ const AddressCard = ({ contractAddress, donationAddress }: AddressCardProps) => 
               className="p-2 hover:bg-white/10 rounded-lg transition-colors"
               title="Copy donation address"
             >
-              <Copy className={copiedDonation ? "text-green-400" : "text-white"} />
+              <Copy className={copiedDonation ? "text-blue-400" : "text-white"} />
             </button>
           </div>
         </div>

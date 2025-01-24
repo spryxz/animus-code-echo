@@ -3,21 +3,64 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2 } from "lucide-react";
+import { Loader2, Mic, MicOff } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 const AIChatBox = () => {
   const [messages, setMessages] = useState<Array<{ role: "user" | "ai"; text: string }>>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      
+      const audioChunks: BlobPart[] = [];
+      
+      mediaRecorder.ondataavailable = (event) => {
+        audioChunks.push(event.data);
+      };
+
+      mediaRecorder.onstop = async () => {
+        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+        // Here you would send the audioBlob to ElevenLabs API
+        // For now, we'll just show a toast
+        toast({
+          title: "Voice Input",
+          description: "Voice input received! (API key needed for processing)",
+        });
+      };
+
+      mediaRecorder.start();
+      setIsRecording(true);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Could not access microphone",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+      mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
+    }
+  };
 
   const generateResponse = async (userInput: string) => {
     const lowerInput = userInput.toLowerCase();
@@ -108,13 +151,13 @@ What would you like to know more about?`;
   };
 
   return (
-    <Card className="glass-card mb-8 border-blue-500/20 bg-gradient-to-r from-blue-500/10 to-purple-500/10">
+    <Card className="glass-card mb-8 border-blue-500/20 bg-gradient-to-r from-blue-500/10 to-purple-500/10 w-full max-w-4xl mx-auto">
       <CardContent className="p-4">
         <h3 className="text-xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
           AI Assistant
         </h3>
         <ScrollArea 
-          className="h-[300px] w-full rounded-md border border-blue-500/20 p-4"
+          className="h-[200px] w-full rounded-md border border-blue-500/20 p-4"
           ref={scrollRef}
         >
           <div className="matrix-bg" />
@@ -149,11 +192,18 @@ What would you like to know more about?`;
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask me anything..."
             className="flex-1"
-            disabled={isLoading}
+            disabled={isLoading || isRecording}
           />
           <Button 
+            type="button"
+            onClick={isRecording ? stopRecording : startRecording}
+            className={`${isRecording ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-500 hover:bg-blue-600'}`}
+          >
+            {isRecording ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+          </Button>
+          <Button 
             type="submit" 
-            disabled={isLoading}
+            disabled={isLoading || isRecording}
             className="bg-blue-500 hover:bg-blue-600"
           >
             Send
