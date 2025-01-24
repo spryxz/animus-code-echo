@@ -151,13 +151,13 @@ What would you like to know more about?`;
   };
 
   return (
-    <Card className="glass-card mb-8 border-blue-500/20 bg-gradient-to-r from-blue-500/10 to-purple-500/10 w-full max-w-4xl mx-auto">
+    <Card className="glass-card mb-8 border-blue-500/20 bg-gradient-to-r from-blue-500/10 to-purple-500/10 w-full">
       <CardContent className="p-4">
         <h3 className="text-xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
           AI Assistant
         </h3>
         <ScrollArea 
-          className="h-[200px] w-full rounded-md border border-blue-500/20 p-4"
+          className="h-[150px] w-full rounded-md border border-blue-500/20 p-4"
           ref={scrollRef}
         >
           <div className="matrix-bg" />

@@ -10,7 +10,7 @@ const DONATION_ADDRESS = "BiiEGigqQw1jhRcfuiL4c8qhGq3tjBs192tPYg98NnB6";
 
 const Index = () => {
   return (
-    <div className="min-h-screen relative bg-gradient-to-b from-[#1a0f2e] to-[#0f172a]">
+    <div className="min-h-screen relative bg-gradient-to-b from-[#1A1F2C] to-[#0f172a]">
       <MatrixBackground />
 
       {/* Social Media Links */}
@@ -38,7 +38,9 @@ const Index = () => {
             Experience the power of AI with Animus
           </p>
 
-          <AIChatBox />
+          <div className="w-full max-w-3xl">
+            <AIChatBox />
+          </div>
 
           <AddressCard contractAddress={CONTRACT_ADDRESS} donationAddress={DONATION_ADDRESS} />
         </div>

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 const MatrixBackground = () => {
   useEffect(() => {
     const canvas = document.createElement("canvas");
-    canvas.className = "fixed inset-0 z-0 pointer-events-none opacity-30";
+    canvas.className = "fixed inset-0 z-0 pointer-events-none opacity-40"; // Increased opacity
     document.body.appendChild(canvas);
     
     const ctx = canvas.getContext("2d");
@@ -25,7 +25,7 @@ const MatrixBackground = () => {
       ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = "#0EA5E9"; // Changed from #0f0 to a nice blue
+      ctx.fillStyle = "#1EAEDB"; // Brighter blue color
       ctx.font = `${fontSize}px monospace`;
 
       for (let i = 0; i < drops.length; i++) {
