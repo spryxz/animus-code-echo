@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2, Mic, MicOff } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import type { SpeechRecognition } from "../types/speech-recognition";
 
 const AIChatBox = () => {
   const [messages, setMessages] = useState<Array<{ role: "user" | "ai"; text: string }>>([]);
