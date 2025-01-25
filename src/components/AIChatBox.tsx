@@ -24,9 +24,8 @@ const AIChatBox = () => {
 
   const startRecording = async () => {
     try {
-      // Check if the browser supports SpeechRecognition
-      if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRecognition) {
         recognitionRef.current = new SpeechRecognition();
         
         recognitionRef.current.continuous = true;
