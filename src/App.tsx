@@ -1,76 +1,24 @@
-import { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Progress } from "@/components/ui/progress";
-import MatrixBackground from "./components/MatrixBackground";
 import Index from "./pages/Index";
 
 const queryClient = new QueryClient();
 
-const App = () => {
-  const [loading, setLoading] = useState(true);
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          return 100;
-        }
-        return prev + 2;
-      });
-    }, 100);
-
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 5000);
-
-    return () => {
-      clearInterval(interval);
-      clearTimeout(timer);
-    };
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#1A1F2C] to-[#0f172a] space-y-8 relative overflow-hidden">
-        <MatrixBackground />
-        <div className="relative z-10">
-          <div className="relative">
-            <img 
-              src="/lovable-uploads/b613d684-53e8-4511-ae39-f40c031c49bb.png" 
-              alt="Brain visualization" 
-              className="w-32 h-32 animate-spin"
-              style={{ animationDuration: '3s' }}
-            />
-            <div className="absolute inset-0 blur-lg bg-blue-500/30 animate-pulse" />
-          </div>
-          <div className="w-64 mt-8">
-            <Progress value={progress} className="h-2" />
-          </div>
-          <p className="text-blue-400 animate-pulse mt-4">Loading Counselor AI...</p>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
-  );
-};
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Index />} />
+        </Routes>
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
+);
 
 export default App;
