@@ -61,34 +61,43 @@ const AIChatBox = () => {
   };
 
   const generateResponse = async (userInput: string) => {
-    const API_KEY = "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";
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${API_KEY}`
-      },
-      body: JSON.stringify({
-        messages: [
-          { 
-            role: "system", 
-            content: "You are a helpful AI assistant focused on providing accurate and informative responses." 
-          },
-          { 
-            role: "user", 
-            content: userInput 
-          }
-        ],
-        model: "gpt-4",
-      })
-    });
+    try {
+      const API_KEY = "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";
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${API_KEY}`
+        },
+        body: JSON.stringify({
+          model: "gpt-4",
+          messages: [
+            { 
+              role: "system", 
+              content: "You are a helpful AI assistant focused on providing accurate and informative responses." 
+            },
+            { 
+              role: "user", 
+              content: userInput 
+            }
+          ],
+          temperature: 0.7,
+          max_tokens: 1000
+        })
+      });
 
-    if (!response.ok) {
-      throw new Error('Failed to generate AI response');
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('API Error:', errorData);
+        throw new Error(errorData.error?.message || 'Failed to generate AI response');
+      }
+
+      const data = await response.json();
+      return data.choices[0]?.message?.content || "I apologize, but I couldn't generate a response.";
+    } catch (error) {
+      console.error('Error generating response:', error);
+      throw error;
     }
-
-    const data = await response.json();
-    return data.choices[0]?.message?.content || "I apologize, but I couldn't generate a response.";
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -109,6 +118,7 @@ const AIChatBox = () => {
         description: "Failed to generate response. Please try again.",
         variant: "destructive",
       });
+      console.error('Error in handleSubmit:', error);
     } finally {
       setIsLoading(false);
     }
