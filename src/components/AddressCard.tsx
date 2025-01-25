@@ -2,30 +2,28 @@ import { useState } from "react";
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
 
-interface AddressCardProps {
-  contractAddress?: string;
-  donationAddress?: string;
-}
-
-const AddressCard = ({ contractAddress, donationAddress }: AddressCardProps) => {
+const AddressCard = () => {
   const [copied, setCopied] = useState(false);
   const [copiedDonation, setCopiedDonation] = useState(false);
+
+  const contractAddress = "0xc0mings00n";
+  const donationAddress = "0xC0mings00nD";
 
   const copyAddress = async (text: string, isDonation: boolean) => {
     try {
       await navigator.clipboard.writeText(text);
       if (isDonation) {
         setCopiedDonation(true);
-        toast.success("Text copied!");
+        toast.success("Address copied!");
         setTimeout(() => setCopiedDonation(false), 2000);
       } else {
         setCopied(true);
-        toast.success("Text copied!");
+        toast.success("Address copied!");
         setTimeout(() => setCopied(false), 2000);
       }
     } catch (err) {
       console.error("Copy failed:", err);
-      toast.error("Failed to copy text");
+      toast.error("Failed to copy address");
     }
   };
 
@@ -36,11 +34,11 @@ const AddressCard = ({ contractAddress, donationAddress }: AddressCardProps) => 
         <div>
           <p className="text-sm text-blue-400 mb-2 font-bold">Contract Address</p>
           <div className="flex items-center space-x-4">
-            <code className="text-blue-300 flex-1 overflow-x-auto">
-              Coming Soon
+            <code className="text-blue-300 flex-1 overflow-x-auto select-text">
+              {contractAddress}
             </code>
             <button
-              onClick={() => copyAddress("Coming Soon", false)}
+              onClick={() => copyAddress(contractAddress, false)}
               className="p-2 hover:bg-white/10 rounded-lg transition-colors"
               title="Copy contract address"
               type="button"
@@ -53,11 +51,11 @@ const AddressCard = ({ contractAddress, donationAddress }: AddressCardProps) => 
         <div className="mt-6">
           <p className="text-sm text-blue-400 mb-2 font-bold">Donation Address</p>
           <div className="flex items-center space-x-4">
-            <code className="text-blue-300 flex-1 overflow-x-auto">
-              Coming Soon
+            <code className="text-blue-300 flex-1 overflow-x-auto select-text">
+              {donationAddress}
             </code>
             <button
-              onClick={() => copyAddress("Coming Soon", true)}
+              onClick={() => copyAddress(donationAddress, true)}
               className="p-2 hover:bg-white/10 rounded-lg transition-colors"
               title="Copy donation address"
               type="button"
