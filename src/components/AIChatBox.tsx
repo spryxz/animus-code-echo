@@ -3,23 +3,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2, Mic, MicOff, Key } from "lucide-react";
+import { Loader2, Mic, MicOff } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import OpenAI from "openai";
 
 const AIChatBox = () => {
   const [messages, setMessages] = useState<Array<{ role: "user" | "ai"; text: string }>>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
-  const [apiKey, setApiKey] = useState(localStorage.getItem("openai_api_key") || "");
   const scrollRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -29,15 +20,6 @@ const AIChatBox = () => {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
-
-  const saveApiKey = (key: string) => {
-    localStorage.setItem("openai_api_key", key);
-    setApiKey(key);
-    toast({
-      title: "API Key Saved",
-      description: "Your OpenAI API key has been saved successfully.",
-    });
-  };
 
   const startRecording = async () => {
     try {
@@ -55,7 +37,7 @@ const AIChatBox = () => {
         const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
         toast({
           title: "Voice Input",
-          description: "Voice input received! (API key needed for processing)",
+          description: "Voice input received!",
         });
       };
 
@@ -79,22 +61,14 @@ const AIChatBox = () => {
   };
 
   const generateResponse = async (userInput: string) => {
-    if (!apiKey) {
-      toast({
-        title: "API Key Required",
-        description: "Please set your OpenAI API key first",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const openai = new OpenAI({
-      apiKey: apiKey,
-      dangerouslyAllowBrowser: true
-    });
-
-    try {
-      const completion = await openai.chat.completions.create({
+    const API_KEY = "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";
+    const response = await fetch('https://api.aiml.services/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${API_KEY}`
+      },
+      body: JSON.stringify({
         messages: [
           { 
             role: "system", 
@@ -106,13 +80,15 @@ const AIChatBox = () => {
           }
         ],
         model: "gpt-4",
-      });
+      })
+    });
 
-      return completion.choices[0]?.message?.content || "I apologize, but I couldn't generate a response.";
-    } catch (error) {
-      console.error('OpenAI API Error:', error);
+    if (!response.ok) {
       throw new Error('Failed to generate AI response');
     }
+
+    const data = await response.json();
+    return data.choices[0]?.message?.content || "I apologize, but I couldn't generate a response.";
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -130,7 +106,7 @@ const AIChatBox = () => {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to generate response. Please check your API key and try again.",
+        description: "Failed to generate response. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -145,29 +121,6 @@ const AIChatBox = () => {
           <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
             AI Assistant
           </h3>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="outline" size="icon">
-                <Key className="h-4 w-4" />
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Set OpenAI API Key</DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4 py-4">
-                <Input
-                  type="password"
-                  placeholder="Enter your OpenAI API key"
-                  value={apiKey}
-                  onChange={(e) => saveApiKey(e.target.value)}
-                />
-                <p className="text-sm text-gray-500">
-                  Your API key will be stored locally in your browser.
-                </p>
-              </div>
-            </DialogContent>
-          </Dialog>
         </div>
         <ScrollArea 
           className="h-[150px] w-full rounded-md border border-blue-500/20 p-4"
