@@ -24,6 +24,7 @@ const AddressCard = ({ contractAddress, donationAddress }: AddressCardProps) => 
         setTimeout(() => setCopied(false), 2000);
       }
     } catch (err) {
+      console.error("Copy failed:", err);
       toast.error("Failed to copy text");
     }
   };
@@ -39,9 +40,10 @@ const AddressCard = ({ contractAddress, donationAddress }: AddressCardProps) => 
               Coming Soon
             </code>
             <button
-              onClick={() => copyAddress(contractAddress || "Coming Soon", false)}
+              onClick={() => copyAddress("Coming Soon", false)}
               className="p-2 hover:bg-white/10 rounded-lg transition-colors"
               title="Copy contract address"
+              type="button"
             >
               <Copy className={copied ? "text-blue-400" : "text-white"} />
             </button>
@@ -55,9 +57,10 @@ const AddressCard = ({ contractAddress, donationAddress }: AddressCardProps) => 
               Coming Soon
             </code>
             <button
-              onClick={() => copyAddress(donationAddress || "Coming Soon", true)}
+              onClick={() => copyAddress("Coming Soon", true)}
               className="p-2 hover:bg-white/10 rounded-lg transition-colors"
               title="Copy donation address"
+              type="button"
             >
               <Copy className={copiedDonation ? "text-blue-400" : "text-white"} />
             </button>
