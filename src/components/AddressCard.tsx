@@ -11,20 +11,20 @@ const AddressCard = ({ contractAddress, donationAddress }: AddressCardProps) => 
   const [copied, setCopied] = useState(false);
   const [copiedDonation, setCopiedDonation] = useState(false);
 
-  const copyAddress = async (address: string, isDonation: boolean) => {
+  const copyAddress = async (text: string, isDonation: boolean) => {
     try {
-      await navigator.clipboard.writeText(address);
+      await navigator.clipboard.writeText(text);
       if (isDonation) {
         setCopiedDonation(true);
-        toast.success("Donation address copied!");
+        toast.success("Text copied!");
         setTimeout(() => setCopiedDonation(false), 2000);
       } else {
         setCopied(true);
-        toast.success("Contract address copied!");
+        toast.success("Text copied!");
         setTimeout(() => setCopied(false), 2000);
       }
     } catch (err) {
-      toast.error("Failed to copy address");
+      toast.error("Failed to copy text");
     }
   };
 
@@ -39,10 +39,9 @@ const AddressCard = ({ contractAddress, donationAddress }: AddressCardProps) => 
               Coming Soon
             </code>
             <button
-              onClick={() => contractAddress && copyAddress(contractAddress, false)}
-              className="p-2 hover:bg-white/10 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={() => copyAddress(contractAddress || "Coming Soon", false)}
+              className="p-2 hover:bg-white/10 rounded-lg transition-colors"
               title="Copy contract address"
-              disabled={!contractAddress}
             >
               <Copy className={copied ? "text-blue-400" : "text-white"} />
             </button>
@@ -56,10 +55,9 @@ const AddressCard = ({ contractAddress, donationAddress }: AddressCardProps) => 
               Coming Soon
             </code>
             <button
-              onClick={() => donationAddress && copyAddress(donationAddress, true)}
-              className="p-2 hover:bg-white/10 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={() => copyAddress(donationAddress || "Coming Soon", true)}
+              className="p-2 hover:bg-white/10 rounded-lg transition-colors"
               title="Copy donation address"
-              disabled={!donationAddress}
             >
               <Copy className={copiedDonation ? "text-blue-400" : "text-white"} />
             </button>
