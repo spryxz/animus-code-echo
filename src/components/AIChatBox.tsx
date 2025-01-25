@@ -14,6 +14,7 @@ const AIChatBox = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -23,40 +24,60 @@ const AIChatBox = () => {
 
   const startRecording = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mediaRecorder = new MediaRecorder(stream);
-      mediaRecorderRef.current = mediaRecorder;
-      
-      const audioChunks: BlobPart[] = [];
-      
-      mediaRecorder.ondataavailable = (event) => {
-        audioChunks.push(event.data);
-      };
+      // Check if the browser supports SpeechRecognition
+      if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognitionRef.current = new SpeechRecognition();
+        
+        recognitionRef.current.continuous = true;
+        recognitionRef.current.interimResults = true;
+        
+        recognitionRef.current.onresult = (event) => {
+          const transcript = Array.from(event.results)
+            .map(result => result[0])
+            .map(result => result.transcript)
+            .join('');
+          
+          setInput(transcript);
+        };
 
-      mediaRecorder.onstop = async () => {
-        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+        recognitionRef.current.onend = () => {
+          setIsRecording(false);
+        };
+
+        recognitionRef.current.start();
+        setIsRecording(true);
+        
         toast({
-          title: "Voice Input",
-          description: "Voice input received!",
+          title: "Recording Started",
+          description: "Speak now...",
         });
-      };
-
-      mediaRecorder.start();
-      setIsRecording(true);
+      } else {
+        toast({
+          title: "Error",
+          description: "Speech recognition is not supported in this browser",
+          variant: "destructive",
+        });
+      }
     } catch (error) {
+      console.error('Error starting recording:', error);
       toast({
         title: "Error",
-        description: "Could not access microphone",
+        description: "Could not start recording",
         variant: "destructive",
       });
+      setIsRecording(false);
     }
   };
 
   const stopRecording = () => {
-    if (mediaRecorderRef.current && isRecording) {
-      mediaRecorderRef.current.stop();
+    if (recognitionRef.current && isRecording) {
+      recognitionRef.current.stop();
       setIsRecording(false);
-      mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
+      toast({
+        title: "Recording Stopped",
+        description: "Voice input captured",
+      });
     }
   };
 
