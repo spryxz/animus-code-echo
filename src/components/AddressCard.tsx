@@ -3,8 +3,8 @@ import { Copy } from "lucide-react";
 import { toast } from "sonner";
 
 interface AddressCardProps {
-  contractAddress: string;
-  donationAddress: string;
+  contractAddress?: string;
+  donationAddress?: string;
 }
 
 const AddressCard = ({ contractAddress, donationAddress }: AddressCardProps) => {
@@ -12,15 +12,19 @@ const AddressCard = ({ contractAddress, donationAddress }: AddressCardProps) => 
   const [copiedDonation, setCopiedDonation] = useState(false);
 
   const copyAddress = async (address: string, isDonation: boolean) => {
-    await navigator.clipboard.writeText(address);
-    if (isDonation) {
-      setCopiedDonation(true);
-      toast.success("Donation address copied!");
-      setTimeout(() => setCopiedDonation(false), 2000);
-    } else {
-      setCopied(true);
-      toast.success("Contract address copied!");
-      setTimeout(() => setCopied(false), 2000);
+    try {
+      await navigator.clipboard.writeText(address);
+      if (isDonation) {
+        setCopiedDonation(true);
+        toast.success("Donation address copied!");
+        setTimeout(() => setCopiedDonation(false), 2000);
+      } else {
+        setCopied(true);
+        toast.success("Contract address copied!");
+        setTimeout(() => setCopied(false), 2000);
+      }
+    } catch (err) {
+      toast.error("Failed to copy address");
     }
   };
 
@@ -32,12 +36,13 @@ const AddressCard = ({ contractAddress, donationAddress }: AddressCardProps) => 
           <p className="text-sm text-blue-400 mb-2 font-bold">Contract Address</p>
           <div className="flex items-center space-x-4">
             <code className="text-blue-300 flex-1 overflow-x-auto">
-              {contractAddress}
+              Coming Soon
             </code>
             <button
-              onClick={() => copyAddress(contractAddress, false)}
-              className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+              onClick={() => contractAddress && copyAddress(contractAddress, false)}
+              className="p-2 hover:bg-white/10 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               title="Copy contract address"
+              disabled={!contractAddress}
             >
               <Copy className={copied ? "text-blue-400" : "text-white"} />
             </button>
@@ -48,12 +53,13 @@ const AddressCard = ({ contractAddress, donationAddress }: AddressCardProps) => 
           <p className="text-sm text-blue-400 mb-2 font-bold">Donation Address</p>
           <div className="flex items-center space-x-4">
             <code className="text-blue-300 flex-1 overflow-x-auto">
-              {donationAddress}
+              Coming Soon
             </code>
             <button
-              onClick={() => copyAddress(donationAddress, true)}
-              className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+              onClick={() => donationAddress && copyAddress(donationAddress, true)}
+              className="p-2 hover:bg-white/10 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               title="Copy donation address"
+              disabled={!donationAddress}
             >
               <Copy className={copiedDonation ? "text-blue-400" : "text-white"} />
             </button>

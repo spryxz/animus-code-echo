@@ -5,9 +5,6 @@ import AddressCard from "@/components/AddressCard";
 import MatrixBackground from "@/components/MatrixBackground";
 import AIChatBox from "@/components/AIChatBox";
 
-const CONTRACT_ADDRESS = "9g8W6Yu5tC1w9YuZ56jfSPqnYe8fUTveEhTX8NENpump";
-const DONATION_ADDRESS = "BiiEGigqQw1jhRcfuiL4c8qhGq3tjBs192tPYg98NnB6";
-
 const Index = () => {
   return (
     <div className="min-h-screen relative bg-gradient-to-b from-[#1A1F2C] to-[#0f172a]">
@@ -42,7 +39,7 @@ const Index = () => {
             <AIChatBox />
           </div>
 
-          <AddressCard contractAddress={CONTRACT_ADDRESS} donationAddress={DONATION_ADDRESS} />
+          <AddressCard />
         </div>
 
         <section className="max-w-4xl mx-auto">
