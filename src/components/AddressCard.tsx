@@ -28,9 +28,8 @@ const AddressCard = () => {
   };
 
   return (
-    <div className="glass-card p-6 w-full max-w-xl space-y-6">
-      <div className="relative overflow-hidden rounded-lg border border-blue-500/20 p-6 bg-gradient-to-r from-blue-500/10 to-blue-300/10">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-blue-300/5" />
+    <div className="w-full max-w-xl">
+      <div className="rounded-lg border border-blue-500/20 p-6 bg-gradient-to-r from-blue-500/10 to-blue-300/10">
         <div>
           <p className="text-sm text-blue-400 mb-2 font-bold select-text">Contract Address</p>
           <div className="flex items-center space-x-4">
