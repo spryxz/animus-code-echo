@@ -5,7 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Progress } from "@/components/ui/progress";
-import { Loader } from "lucide-react";
 import MatrixBackground from "./components/MatrixBackground";
 import Index from "./pages/Index";
 
@@ -42,7 +41,12 @@ const App = () => {
         <MatrixBackground />
         <div className="relative z-10">
           <div className="relative">
-            <Loader className="w-16 h-16 text-blue-500 animate-spin" />
+            <img 
+              src="/lovable-uploads/b613d684-53e8-4511-ae39-f40c031c49bb.png" 
+              alt="Brain visualization" 
+              className="w-32 h-32 animate-spin"
+              style={{ animationDuration: '3s' }}
+            />
             <div className="absolute inset-0 blur-lg bg-blue-500/30 animate-pulse" />
           </div>
           <div className="w-64 mt-8">
