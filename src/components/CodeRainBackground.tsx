@@ -39,7 +39,7 @@ const CodeRainBackground = () => {
         if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
           drops[i] = 0;
         }
-        drops[i]++;
+        drops[i] += 0.75; // Changed from 1 to 0.75 to slightly slow down the falling speed
       }
     };
 
