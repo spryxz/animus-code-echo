@@ -61,8 +61,8 @@ const AIChatBox = () => {
   };
 
   const generateResponse = async (userInput: string) => {
-    const API_KEY = "459150bfeaa1475496aafa5113ebde38";
-    const response = await fetch('https://api.aiml.services/v1/chat/completions', {
+    const API_KEY = "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";
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
