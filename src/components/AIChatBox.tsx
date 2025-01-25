@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2, Mic, MicOff } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import OpenAI from "openai";
 
 const AIChatBox = () => {
   const [messages, setMessages] = useState<Array<{ role: "user" | "ai"; text: string }>>([]);
@@ -35,8 +36,6 @@ const AIChatBox = () => {
 
       mediaRecorder.onstop = async () => {
         const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-        // Here you would send the audioBlob to ElevenLabs API
-        // For now, we'll just show a toast
         toast({
           title: "Voice Input",
           description: "Voice input received! (API key needed for processing)",
@@ -63,68 +62,31 @@ const AIChatBox = () => {
   };
 
   const generateResponse = async (userInput: string) => {
-    const lowerInput = userInput.toLowerCase();
-    
-    // Code-related response
-    if (lowerInput.includes("code") || lowerInput.includes("programming")) {
-      return `Here's a simple example based on your query:
-\`\`\`javascript
-// Basic JavaScript function example
-function greet(name) {
-  return \`Hello, \${name}! Welcome to programming.\`;
-}
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+      dangerouslyAllowBrowser: true
+    });
 
-// Usage
-console.log(greet("Developer"));
-\`\`\`
+    try {
+      const completion = await openai.chat.completions.create({
+        messages: [
+          { 
+            role: "system", 
+            content: "You are a helpful AI assistant focused on providing accurate and informative responses." 
+          },
+          { 
+            role: "user", 
+            content: userInput 
+          }
+        ],
+        model: "gpt-4",
+      });
 
-Feel free to ask for more specific programming examples!`;
+      return completion.choices[0]?.message?.content || "I apologize, but I couldn't generate a response.";
+    } catch (error) {
+      console.error('OpenAI API Error:', error);
+      throw new Error('Failed to generate AI response');
     }
-    
-    // Recipe-related response
-    if (lowerInput.includes("recipe") || lowerInput.includes("cook")) {
-      return `Here's a simple recipe based on your query:
-
-🍳 Quick Pasta Recipe:
-
-Ingredients:
-- 200g pasta
-- 2 cloves garlic
-- 2 tbsp olive oil
-- Salt and pepper to taste
-- Fresh basil (optional)
-
-Instructions:
-1. Boil pasta according to package instructions
-2. Sauté minced garlic in olive oil
-3. Combine pasta with garlic oil
-4. Season and garnish with basil
-
-Enjoy your meal! Let me know if you need more specific recipes.`;
-    }
-    
-    // AI/ML-related response
-    if (lowerInput.includes("ai") || lowerInput.includes("machine learning")) {
-      return `Here's some information about AI/ML:
-
-🤖 Key AI/ML Concepts:
-- Machine Learning is a subset of AI
-- Deep Learning is a subset of Machine Learning
-- Neural Networks are inspired by human brain structure
-- Common applications: image recognition, natural language processing, recommendation systems
-
-Would you like to know more about any specific AI/ML topic?`;
-    }
-    
-    // Default response with helpful suggestions
-    return `I can help you with various tasks! Here are some things you can ask about:
-
-1. 💻 Programming and coding examples
-2. 🍳 Cooking recipes and instructions
-3. 🤖 AI and Machine Learning concepts
-4. 📚 General knowledge and explanations
-
-What would you like to know more about?`;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
