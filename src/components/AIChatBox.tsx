@@ -62,7 +62,7 @@ const AIChatBox = () => {
 
   const generateResponse = async (userInput: string) => {
     try {
-      const API_KEY = "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";
+      const API_KEY = "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";
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
