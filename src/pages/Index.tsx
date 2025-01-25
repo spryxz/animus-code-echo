@@ -2,14 +2,11 @@ import { Twitter } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import AddressCard from "@/components/AddressCard";
-import MatrixBackground from "@/components/MatrixBackground";
 import AIChatBox from "@/components/AIChatBox";
 
 const Index = () => {
   return (
     <div className="min-h-screen relative bg-gradient-to-b from-[#1A1F2C] to-[#0f172a]">
-      <MatrixBackground />
-
       {/* Social Media Links */}
       <div className="absolute top-4 right-4 z-20">
         <a
