@@ -6,8 +6,8 @@ const AddressCard = () => {
   const [copied, setCopied] = useState(false);
   const [copiedDonation, setCopiedDonation] = useState(false);
 
-  const contractAddress = "0xc0mings00n";
-  const donationAddress = "0xC0mings00nD";
+  const contractAddress = "Coming Soon";
+  const donationAddress = "Coming Soon";
 
   const copyAddress = async (text: string, isDonation: boolean) => {
     try {
