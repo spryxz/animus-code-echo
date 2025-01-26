@@ -156,10 +156,11 @@ const AIChatBox = () => {
               className="w-8 h-8 object-contain"
             />
             <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-              AI Assistant
+              Atlas
             </h3>
           </div>
         </div>
+        
         <ScrollArea 
           className="h-[150px] w-full rounded-md border border-blue-500/20 p-4"
           ref={scrollRef}
