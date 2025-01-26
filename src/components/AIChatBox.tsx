@@ -149,9 +149,16 @@ const AIChatBox = () => {
     <Card className="glass-card mb-8 border-blue-500/20 bg-gradient-to-r from-blue-500/10 to-purple-500/10 w-full">
       <CardContent className="p-4">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-            AI Assistant
-          </h3>
+          <div className="flex items-center gap-2">
+            <img
+              src="/lovable-uploads/c254301f-88b6-401b-bf61-9ff19b6fc9ed.png"
+              alt="AI Brain"
+              className="w-8 h-8 object-contain"
+            />
+            <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+              AI Assistant
+            </h3>
+          </div>
         </div>
         <ScrollArea 
           className="h-[150px] w-full rounded-md border border-blue-500/20 p-4"
