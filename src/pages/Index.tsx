@@ -7,11 +7,11 @@ import AIChatBox from "@/components/AIChatBox";
 
 const Index = () => {
   return (
-    <div className="min-h-screen relative bg-gradient-to-b from-[#1A1F2C] to-[#0f172a]">
+    <div className="min-h-screen relative bg-gradient-to-b from-[#1A1F2C] to-[#0f172a] pt-16">
       <MatrixBackground />
 
       {/* Social Media Links */}
-      <div className="absolute top-4 right-4 z-20">
+      <div className="absolute top-20 right-4 z-20">
         <a
           href="https://x.com/counseloraisol"
           target="_blank"
