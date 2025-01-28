@@ -36,6 +36,8 @@ const AIChatBox = () => {
         throw new Error('ElevenLabs API key not found');
       }
 
+      console.log('Attempting to generate speech with text:', text.substring(0, 50) + '...');
+      
       const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
         method: 'POST',
         headers: {
@@ -55,6 +57,7 @@ const AIChatBox = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
+        console.error('ElevenLabs API Error:', errorData);
         throw new Error(errorData.detail?.message || 'Failed to generate speech');
       }
 
@@ -63,7 +66,22 @@ const AIChatBox = () => {
       const audio = new Audio(audioUrl);
       
       setIsSpeaking(true);
-      audio.play();
+      
+      audio.onerror = (e) => {
+        console.error('Audio playback error:', e);
+        setIsSpeaking(false);
+        URL.revokeObjectURL(audioUrl);
+        toast({
+          title: "Error",
+          description: "Failed to play audio",
+          variant: "destructive",
+        });
+      };
+      
+      audio.play().catch(error => {
+        console.error('Audio play error:', error);
+        throw error;
+      });
       
       audio.onended = () => {
         setIsSpeaking(false);
@@ -71,12 +89,12 @@ const AIChatBox = () => {
       };
     } catch (error) {
       console.error('Error generating speech:', error);
+      setIsSpeaking(false);
       toast({
         title: "Error",
         description: error instanceof Error ? error.message : "Failed to generate speech",
         variant: "destructive",
       });
-      setIsSpeaking(false);
     }
   };
 
