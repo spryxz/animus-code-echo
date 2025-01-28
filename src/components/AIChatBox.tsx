@@ -29,8 +29,12 @@ const AIChatBox = () => {
     if (!isVoiceEnabled) return;
 
     try {
-      const API_KEY = "YOUR_ELEVEN_LABS_API_KEY"; // Replace with your API key
+      const API_KEY = import.meta.env.VITE_ELEVEN_LABS_API_KEY;
       const VOICE_ID = "EXAVITQu4vr4xnSDxMaL"; // Sarah's voice ID
+
+      if (!API_KEY) {
+        throw new Error('ElevenLabs API key not found');
+      }
 
       const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
         method: 'POST',
@@ -50,7 +54,8 @@ const AIChatBox = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to generate speech');
+        const errorData = await response.json();
+        throw new Error(errorData.detail?.message || 'Failed to generate speech');
       }
 
       const audioBlob = await response.blob();
@@ -68,7 +73,7 @@ const AIChatBox = () => {
       console.error('Error generating speech:', error);
       toast({
         title: "Error",
-        description: "Failed to generate speech",
+        description: error instanceof Error ? error.message : "Failed to generate speech",
         variant: "destructive",
       });
       setIsSpeaking(false);
