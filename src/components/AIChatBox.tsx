@@ -33,12 +33,13 @@ const AIChatBox = () => {
       const VOICE_ID = "EXAVITQu4vr4xnSDxMaL"; // Sarah's voice ID
 
       if (!API_KEY) {
+        console.error('ElevenLabs API key is missing');
         throw new Error('ElevenLabs API key not found');
       }
 
       console.log('Attempting to generate speech with text:', text.substring(0, 50) + '...');
       
-      const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
+      const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}/stream`, {
         method: 'POST',
         headers: {
           'Accept': 'audio/mpeg',
@@ -49,8 +50,10 @@ const AIChatBox = () => {
           text,
           model_id: "eleven_monolingual_v1",
           voice_settings: {
-            stability: 0.5,
-            similarity_boost: 0.5
+            stability: 0.75,
+            similarity_boost: 0.75,
+            style: 0.5,
+            use_speaker_boost: true
           }
         })
       });
@@ -77,11 +80,13 @@ const AIChatBox = () => {
           variant: "destructive",
         });
       };
-      
-      audio.play().catch(error => {
-        console.error('Audio play error:', error);
-        throw error;
+
+      await new Promise((resolve, reject) => {
+        audio.oncanplaythrough = resolve;
+        audio.onerror = reject;
       });
+      
+      await audio.play();
       
       audio.onended = () => {
         setIsSpeaking(false);
