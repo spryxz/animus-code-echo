@@ -3,7 +3,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2, Mic, MicOff } from "lucide-react";
+import { Loader2, Mic, MicOff, Volume2, VolumeX } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import type { SpeechRecognition } from "../types/speech-recognition";
 
@@ -12,6 +12,8 @@ const AIChatBox = () => {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isVoiceEnabled, setIsVoiceEnabled] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -22,6 +24,56 @@ const AIChatBox = () => {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
+
+  const speakText = async (text: string) => {
+    if (!isVoiceEnabled) return;
+
+    try {
+      const API_KEY = "YOUR_ELEVEN_LABS_API_KEY"; // Replace with your API key
+      const VOICE_ID = "EXAVITQu4vr4xnSDxMaL"; // Sarah's voice ID
+
+      const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'audio/mpeg',
+          'xi-api-key': API_KEY,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          text,
+          model_id: "eleven_monolingual_v1",
+          voice_settings: {
+            stability: 0.5,
+            similarity_boost: 0.5
+          }
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate speech');
+      }
+
+      const audioBlob = await response.blob();
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const audio = new Audio(audioUrl);
+      
+      setIsSpeaking(true);
+      audio.play();
+      
+      audio.onended = () => {
+        setIsSpeaking(false);
+        URL.revokeObjectURL(audioUrl);
+      };
+    } catch (error) {
+      console.error('Error generating speech:', error);
+      toast({
+        title: "Error",
+        description: "Failed to generate speech",
+        variant: "destructive",
+      });
+      setIsSpeaking(false);
+    }
+  };
 
   const startRecording = async () => {
     try {
@@ -133,6 +185,9 @@ const AIChatBox = () => {
     try {
       const aiResponse = await generateResponse(userMessage);
       setMessages(prev => [...prev, { role: "ai", text: aiResponse }]);
+      if (isVoiceEnabled) {
+        await speakText(aiResponse);
+      }
     } catch (error) {
       toast({
         title: "Error",
@@ -159,6 +214,18 @@ const AIChatBox = () => {
               Atlas
             </h3>
           </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsVoiceEnabled(!isVoiceEnabled)}
+            className="hover:bg-blue-500/20"
+          >
+            {isVoiceEnabled ? (
+              <Volume2 className="w-4 h-4" />
+            ) : (
+              <VolumeX className="w-4 h-4" />
+            )}
+          </Button>
         </div>
         
         <ScrollArea 
