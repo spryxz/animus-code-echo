@@ -29,39 +29,32 @@ const AIChatBox = () => {
     if (!isVoiceEnabled) return;
 
     try {
-      const API_KEY = import.meta.env.VITE_ELEVEN_LABS_API_KEY;
-      const VOICE_ID = "EXAVITQu4vr4xnSDxMaL"; // Sarah's voice ID
-
+      const API_KEY = "sk-svcacct-MWCRx1P9mYMJ4QzV5u6GjfXcxHUKsyxtk2ffRFuqbDD-SwCRh0dzc8YGK1K2mT3BlbkFJSH2JRd5f6HlbVSbvm_HtzbP0L9GfzyTYGkoYKd9LWOgOamRi2dOfHg7ywoIAA";
+      
       if (!API_KEY) {
-        console.error('ElevenLabs API key is missing');
-        throw new Error('ElevenLabs API key not found');
+        console.error('OpenAI API key is missing');
+        throw new Error('OpenAI API key not found');
       }
 
       console.log('Attempting to generate speech with text:', text.substring(0, 50) + '...');
       
-      const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}/stream`, {
+      const response = await fetch('https://api.openai.com/v1/audio/speech', {
         method: 'POST',
         headers: {
-          'Accept': 'audio/mpeg',
-          'xi-api-key': API_KEY,
-          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${API_KEY}`,
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          text,
-          model_id: "eleven_monolingual_v1",
-          voice_settings: {
-            stability: 0.75,
-            similarity_boost: 0.75,
-            style: 0.5,
-            use_speaker_boost: true
-          }
+          model: 'tts-1',
+          input: text,
+          voice: 'alloy'
         })
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('ElevenLabs API Error:', errorData);
-        throw new Error(errorData.detail?.message || 'Failed to generate speech');
+        console.error('OpenAI API Error:', errorData);
+        throw new Error(errorData.error?.message || 'Failed to generate speech');
       }
 
       const audioBlob = await response.blob();
